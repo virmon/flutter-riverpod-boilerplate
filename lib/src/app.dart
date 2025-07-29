@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod_boilerplate/src/constants/app_colors.dart';
 import 'package:flutter_riverpod_boilerplate/src/routing/app_router.dart';
 
 class App extends ConsumerWidget {
@@ -12,16 +13,23 @@ class App extends ConsumerWidget {
       routerConfig: goRouter,
       title: 'Flutter App',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.blueAccent,
-          brightness: Brightness.light,
+        colorScheme: ColorScheme.fromSeed(seedColor: AppColors.violetC2),
+        appBarTheme: const AppBarTheme(
+          backgroundColor: AppColors.violetC2,
+          foregroundColor: AppColors.whiteSmoke,
         ),
         navigationBarTheme: NavigationBarThemeData(
-          backgroundColor: Colors.blueAccent,
+          backgroundColor: AppColors.violetC2,
           indicatorColor: Colors.white10,
+          labelTextStyle: WidgetStateProperty.resolveWith((states) {
+            if (states.contains(WidgetState.selected)) {
+              return const TextStyle(color: AppColors.violet99);
+            }
+            return const TextStyle(color: AppColors.grey, fontSize: 12);
+          }),
         ),
         navigationRailTheme: NavigationRailThemeData(
-          backgroundColor: Colors.blueAccent,
+          backgroundColor: AppColors.violetC2,
           indicatorColor: Colors.white10,
         ),
       ),

@@ -19,11 +19,11 @@ class ScaffoldWithNavigationBar extends StatelessWidget {
       body: body,
       bottomNavigationBar: NavigationBar(
         selectedIndex: selectedIndex,
-        labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
+        labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
         destinations: const [
           NavigationDestination(
             label: NavigationLabel.home,
-            icon: Icon(Icons.dashboard, color: Colors.white70),
+            icon: Icon(Icons.home, color: Colors.white70),
           ),
           NavigationDestination(
             label: NavigationLabel.profile,
