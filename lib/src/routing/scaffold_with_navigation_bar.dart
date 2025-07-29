@@ -29,6 +29,10 @@ class ScaffoldWithNavigationBar extends StatelessWidget {
             label: NavigationLabel.profile,
             icon: Icon(Icons.person, color: Colors.white70),
           ),
+          NavigationDestination(
+            label: NavigationLabel.dataTable,
+            icon: Icon(Icons.storage, color: Colors.white70),
+          ),
         ],
         onDestinationSelected: onDestinationSelected,
       ),

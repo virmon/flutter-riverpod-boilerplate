@@ -31,6 +31,10 @@ class ScaffoldWithNavigationRail extends StatelessWidget {
                 label: Text(NavigationLabel.profile),
                 icon: Icon(Icons.person, color: Colors.white70),
               ),
+              NavigationRailDestination(
+                label: Text(NavigationLabel.dataTable),
+                icon: Icon(Icons.storage, color: Colors.white70),
+              ),
             ],
           ),
           const VerticalDivider(thickness: 1, width: 1),

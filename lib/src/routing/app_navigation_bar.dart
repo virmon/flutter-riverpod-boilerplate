@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 class NavigationLabel {
   static const home = 'Home';
   static const profile = 'Profile';
+  static const dataTable = 'Data Table';
 }
 
 class AppNavigationBar extends StatelessWidget {

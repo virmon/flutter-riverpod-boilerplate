@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod_boilerplate/src/feature/authentication/auth_gate.dart';
+import 'package:flutter_riverpod_boilerplate/src/feature/home/data_table.dart';
 import 'package:flutter_riverpod_boilerplate/src/routing/app_navigation_bar.dart';
 import 'package:flutter_riverpod_boilerplate/src/feature/home/home.dart';
 import 'package:go_router/go_router.dart';
@@ -12,8 +13,11 @@ final _shellNavigatorHomeKey = GlobalKey<NavigatorState>(
 final _shellNavigatorProfileKey = GlobalKey<NavigatorState>(
   debugLabel: 'shellProfile',
 );
+final _shellNavigatorDataTableKey = GlobalKey<NavigatorState>(
+  debugLabel: 'shellDataTable',
+);
 
-enum AppRoute { signIn, home, profile }
+enum AppRoute { signIn, home, profile, dataTable }
 
 final goRouterProvider = Provider((ref) {
   return GoRouter(
@@ -57,6 +61,17 @@ final goRouterProvider = Provider((ref) {
                 pageBuilder: (context, state) => const NoTransitionPage(
                   child: Scaffold(body: Center(child: Text('Profile'))),
                 ),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            navigatorKey: _shellNavigatorDataTableKey,
+            routes: [
+              GoRoute(
+                path: '/dataTable',
+                name: AppRoute.dataTable.name,
+                pageBuilder: (context, state) =>
+                    const NoTransitionPage(child: MyDataTable()),
               ),
             ],
           ),
