@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod_boilerplate/src/feature/authentication/auth_gate.dart';
+import 'package:flutter_riverpod_boilerplate/src/feature/examples/schedule_list.dart';
 import 'package:flutter_riverpod_boilerplate/src/feature/home/data_table.dart';
+import 'package:flutter_riverpod_boilerplate/src/feature/home/grid.dart';
 import 'package:flutter_riverpod_boilerplate/src/routing/app_navigation_bar.dart';
 import 'package:flutter_riverpod_boilerplate/src/feature/home/home.dart';
 import 'package:go_router/go_router.dart';
@@ -25,7 +27,7 @@ final goRouterProvider = Provider((ref) {
     navigatorKey: _rootNavigatorKey,
     debugLogDiagnostics: false,
     redirect: (context, state) {
-      final path = state.uri.path;
+      // final path = state.uri.path;
       // check loggedIn state here then redirect to proper path
       return null;
     },
@@ -58,9 +60,8 @@ final goRouterProvider = Provider((ref) {
               GoRoute(
                 path: '/profile',
                 name: AppRoute.profile.name,
-                pageBuilder: (context, state) => const NoTransitionPage(
-                  child: Scaffold(body: Center(child: Text('Profile'))),
-                ),
+                pageBuilder: (context, state) =>
+                    const NoTransitionPage(child: GridWidget()),
               ),
             ],
           ),
