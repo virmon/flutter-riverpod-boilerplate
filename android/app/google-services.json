@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "335763425889",
+    "project_id": "pilagenda",
+    "storage_bucket": "pilagenda.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:335763425889:android:b69d5792f2eef2baa17820",
+        "android_client_info": {
+          "package_name": "com.example.pilagenda"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA8PX_H8oQyq1pC_xQNaCRJp1vbsOskGUA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
