@@ -31,6 +31,8 @@ class App extends ConsumerWidget {
         navigationRailTheme: NavigationRailThemeData(
           backgroundColor: AppColors.violetC2,
           indicatorColor: Colors.white10,
+          unselectedLabelTextStyle: TextStyle(color: AppColors.black),
+          selectedLabelTextStyle: TextStyle(color: AppColors.white),
         ),
       ),
     );
