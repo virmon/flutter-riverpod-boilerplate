@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod_boilerplate/src/feature/authentication/auth_gate.dart';
-import 'package:flutter_riverpod_boilerplate/src/feature/examples/schedule_list.dart';
+import 'package:flutter_riverpod_boilerplate/src/feature/examples/inline_calendar.dart';
+import 'package:flutter_riverpod_boilerplate/src/feature/examples/calendar_root.dart';
 import 'package:flutter_riverpod_boilerplate/src/feature/home/data_table.dart';
 import 'package:flutter_riverpod_boilerplate/src/feature/home/grid.dart';
 import 'package:flutter_riverpod_boilerplate/src/routing/app_navigation_bar.dart';
@@ -15,11 +16,14 @@ final _shellNavigatorHomeKey = GlobalKey<NavigatorState>(
 final _shellNavigatorProfileKey = GlobalKey<NavigatorState>(
   debugLabel: 'shellProfile',
 );
+final _shellNavigatorCalendarKey = GlobalKey<NavigatorState>(
+  debugLabel: 'shellCalendar',
+);
 final _shellNavigatorDataTableKey = GlobalKey<NavigatorState>(
   debugLabel: 'shellDataTable',
 );
 
-enum AppRoute { signIn, home, profile, dataTable }
+enum AppRoute { signIn, home, profile, dataTable, calendar, calendarDetail }
 
 final goRouterProvider = Provider((ref) {
   return GoRouter(
@@ -62,6 +66,25 @@ final goRouterProvider = Provider((ref) {
                 name: AppRoute.profile.name,
                 pageBuilder: (context, state) =>
                     const NoTransitionPage(child: GridWidget()),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            navigatorKey: _shellNavigatorCalendarKey,
+            routes: [
+              GoRoute(
+                path: '/calendar',
+                name: AppRoute.calendar.name,
+                pageBuilder: (context, state) =>
+                    const NoTransitionPage(child: CalendarRoot()),
+                routes: [
+                  GoRoute(
+                    path: '/calendarDetail',
+                    name: AppRoute.calendarDetail.name,
+                    pageBuilder: (context, state) =>
+                        const NoTransitionPage(child: InlineCalendar()),
+                  ),
+                ],
               ),
             ],
           ),

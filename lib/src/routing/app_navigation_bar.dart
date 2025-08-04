@@ -7,6 +7,7 @@ class NavigationLabel {
   static const home = 'Home';
   static const profile = 'Profile';
   static const dataTable = 'Data Table';
+  static const calendar = 'Calendar';
 }
 
 class AppNavigationBar extends StatelessWidget {

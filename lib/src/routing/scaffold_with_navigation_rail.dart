@@ -32,6 +32,10 @@ class ScaffoldWithNavigationRail extends StatelessWidget {
                 icon: Icon(Icons.person, color: Colors.white70),
               ),
               NavigationRailDestination(
+                label: Text(NavigationLabel.calendar),
+                icon: Icon(Icons.calendar_month, color: Colors.white70),
+              ),
+              NavigationRailDestination(
                 label: Text(NavigationLabel.dataTable),
                 icon: Icon(Icons.storage, color: Colors.white70),
               ),

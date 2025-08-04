@@ -30,6 +30,10 @@ class ScaffoldWithNavigationBar extends StatelessWidget {
             icon: Icon(Icons.person, color: Colors.white70),
           ),
           NavigationDestination(
+            label: NavigationLabel.calendar,
+            icon: Icon(Icons.calendar_month, color: Colors.white70),
+          ),
+          NavigationDestination(
             label: NavigationLabel.dataTable,
             icon: Icon(Icons.storage, color: Colors.white70),
           ),
