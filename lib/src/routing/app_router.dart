@@ -27,7 +27,7 @@ final _shellNavigatorScheduleKey = GlobalKey<NavigatorState>(
   debugLabel: 'shellSchedule',
 );
 
-enum AppRoute { signIn, home, profile, schedule, dataTable }
+enum AppRoute { signIn, home, profile, schedule, dataTable, calendarDetail }
 
 final goRouterProvider = Provider((ref) {
   return GoRouter(
