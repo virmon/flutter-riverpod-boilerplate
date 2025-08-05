@@ -5,6 +5,7 @@ import 'package:flutter_riverpod_boilerplate/src/feature/examples/inline_calenda
 import 'package:flutter_riverpod_boilerplate/src/feature/examples/calendar_root.dart';
 import 'package:flutter_riverpod_boilerplate/src/feature/home/data_table.dart';
 import 'package:flutter_riverpod_boilerplate/src/feature/home/grid.dart';
+import 'package:flutter_riverpod_boilerplate/src/feature/scheduling/presentation/schedule_list_page.dart';
 import 'package:flutter_riverpod_boilerplate/src/routing/app_navigation_bar.dart';
 import 'package:flutter_riverpod_boilerplate/src/feature/home/home.dart';
 import 'package:go_router/go_router.dart';
@@ -22,8 +23,11 @@ final _shellNavigatorCalendarKey = GlobalKey<NavigatorState>(
 final _shellNavigatorDataTableKey = GlobalKey<NavigatorState>(
   debugLabel: 'shellDataTable',
 );
+final _shellNavigatorScheduleKey = GlobalKey<NavigatorState>(
+  debugLabel: 'shellSchedule',
+);
 
-enum AppRoute { signIn, home, profile, dataTable, calendar, calendarDetail }
+enum AppRoute { signIn, home, profile, schedule, dataTable }
 
 final goRouterProvider = Provider((ref) {
   return GoRouter(
@@ -70,21 +74,13 @@ final goRouterProvider = Provider((ref) {
             ],
           ),
           StatefulShellBranch(
-            navigatorKey: _shellNavigatorCalendarKey,
+            navigatorKey: _shellNavigatorScheduleKey,
             routes: [
               GoRoute(
-                path: '/calendar',
-                name: AppRoute.calendar.name,
+                path: '/schedule',
+                name: AppRoute.schedule.name,
                 pageBuilder: (context, state) =>
-                    const NoTransitionPage(child: CalendarRoot()),
-                routes: [
-                  GoRoute(
-                    path: '/calendarDetail',
-                    name: AppRoute.calendarDetail.name,
-                    pageBuilder: (context, state) =>
-                        const NoTransitionPage(child: InlineCalendar()),
-                  ),
-                ],
+                    const NoTransitionPage(child: ScheduleListPage()),
               ),
             ],
           ),
