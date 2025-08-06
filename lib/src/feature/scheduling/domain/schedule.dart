@@ -11,8 +11,12 @@ class ScheduleModel {
   final String repeat;
   final String location;
   final int maxAttendees;
+  final String businessId;
+  final String instructorId;
+  final DateTime createdAt;
 
-  ScheduleModel({
+  ScheduleModel(
+    this.createdAt, {
     required this.id,
     required this.title,
     required this.description,
@@ -25,10 +29,13 @@ class ScheduleModel {
     required this.repeat,
     required this.location,
     required this.maxAttendees,
+    required this.businessId,
+    required this.instructorId,
   });
 
   factory ScheduleModel.fromJson(Map<String, dynamic> json, String id) {
     return ScheduleModel(
+      DateTime.parse(json['date']),
       id: id,
       title: json['title'],
       description: json['description'],
@@ -41,6 +48,8 @@ class ScheduleModel {
       repeat: json['repeat'],
       location: json['location'],
       maxAttendees: json['maxAttendees'],
+      businessId: '',
+      instructorId: '',
     );
   }
 
@@ -57,6 +66,8 @@ class ScheduleModel {
       'repeat': repeat,
       'location': location,
       'maxAttendees': maxAttendees,
+      'businessId': businessId,
+      'instructorId': instructorId,
     };
   }
 }

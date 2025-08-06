@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod_boilerplate/src/feature/scheduling/data/schedule_repository.dart';
+import 'package:flutter_riverpod_boilerplate/src/feature/scheduling/presentation/schedule_form_page.dart';
 import 'package:flutter_riverpod_boilerplate/src/feature/scheduling/presentation/schedule_list.dart';
 
 class ScheduleListPage extends ConsumerWidget {
@@ -17,6 +18,16 @@ class ScheduleListPage extends ConsumerWidget {
             ScheduleList(isUpcomingSchedule: false, schedules: schedules),
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (e, _) => Center(child: Text('Error: $e')),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => const ScheduleForm()),
+          );
+        },
+        child: const Icon(Icons.add),
+        tooltip: 'Create New Schedule',
       ),
     );
   }
