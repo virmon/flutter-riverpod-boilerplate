@@ -1,17 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod_boilerplate/src/constants/app_colors.dart';
+import 'package:flutter_riverpod_boilerplate/src/constants/fake_user_role.dart';
+import 'package:flutter_riverpod_boilerplate/src/constants/user_roles.dart';
 import 'package:flutter_riverpod_boilerplate/src/routing/app_router.dart';
+import 'package:flutter_riverpod_boilerplate/src/routing/clientele/clientele_router.dart';
+import 'package:go_router/go_router.dart';
 
 class App extends ConsumerWidget {
   const App({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final goRouter = ref.watch(goRouterProvider);
+    final userRole = FakeUserRole.tenant;
+
+    GoRouter routerProvider;
+    switch (userRole) {
+      case UserRoles.clientele:
+        routerProvider = ref.watch(goRouterClienteleProvider);
+        break;
+      default:
+        routerProvider = ref.watch(goRouterProvider);
+    }
+
     return MaterialApp.router(
-      routerConfig: goRouter,
-      title: 'Flutter App',
+      routerConfig: routerProvider,
+      title: 'Kaioras',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: AppColors.violetC2),
         appBarTheme: const AppBarTheme(

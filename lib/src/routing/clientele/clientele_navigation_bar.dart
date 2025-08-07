@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod_boilerplate/src/routing/app_navigation_widget.dart';
 
-class ScaffoldWithNavigationBar extends StatelessWidget {
-  const ScaffoldWithNavigationBar({
+class ClienteleNavigationBar extends StatelessWidget {
+  const ClienteleNavigationBar({
     super.key,
     required this.body,
     required this.selectedIndex,
@@ -22,20 +22,16 @@ class ScaffoldWithNavigationBar extends StatelessWidget {
         labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
         destinations: const [
           NavigationDestination(
-            label: NavigationLabel.home,
+            label: ClienteleNavigationLabel.bookings,
             icon: Icon(Icons.home, color: Colors.white70),
           ),
           NavigationDestination(
-            label: NavigationLabel.profile,
+            label: ClienteleNavigationLabel.memberships,
+            icon: Icon(Icons.card_membership, color: Colors.white70),
+          ),
+          NavigationDestination(
+            label: ClienteleNavigationLabel.profile,
             icon: Icon(Icons.person, color: Colors.white70),
-          ),
-          NavigationDestination(
-            label: NavigationLabel.calendar,
-            icon: Icon(Icons.calendar_month, color: Colors.white70),
-          ),
-          NavigationDestination(
-            label: NavigationLabel.dataTable,
-            icon: Icon(Icons.storage, color: Colors.white70),
           ),
         ],
         onDestinationSelected: onDestinationSelected,
