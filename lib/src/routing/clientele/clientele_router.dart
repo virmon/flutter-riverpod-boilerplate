@@ -3,6 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod_boilerplate/src/constants/fake_user_role.dart';
 import 'package:flutter_riverpod_boilerplate/src/constants/user_roles.dart';
 import 'package:flutter_riverpod_boilerplate/src/feature/authentication/auth_gate.dart';
+import 'package:flutter_riverpod_boilerplate/src/feature/clientele/scheduling/presentation/bookings_screen.dart';
+import 'package:flutter_riverpod_boilerplate/src/feature/clientele/scheduling/presentation/event_detail.dart';
+import 'package:flutter_riverpod_boilerplate/src/feature/clientele/scheduling/presentation/events_list.dart';
 import 'package:flutter_riverpod_boilerplate/src/routing/app_navigation_widget.dart';
 
 import 'package:go_router/go_router.dart';
@@ -21,8 +24,10 @@ final _shellClienteleProfileKey = GlobalKey<NavigatorState>(
 enum ClienteleRoute {
   signIn,
   clienteleBookings,
+  tenantCalendar,
   clienteleMemberships,
   clienteleProfile,
+  eventDetail,
 }
 
 final goRouterClienteleProvider = Provider((ref) {
@@ -59,7 +64,21 @@ final goRouterClienteleProvider = Provider((ref) {
                 path: '/clientele',
                 name: ClienteleRoute.clienteleBookings.name,
                 pageBuilder: (context, state) =>
-                    const NoTransitionPage(child: Placeholder()),
+                    const NoTransitionPage(child: BookingsScreen()),
+                routes: [
+                  GoRoute(
+                    path: '/bookings',
+                    name: ClienteleRoute.tenantCalendar.name,
+                    pageBuilder: (context, state) =>
+                        const NoTransitionPage(child: EventsList()),
+                  ),
+                  GoRoute(
+                    path: '/event/detail',
+                    name: ClienteleRoute.eventDetail.name,
+                    pageBuilder: (context, state) =>
+                        const NoTransitionPage(child: EventDetail()),
+                  ),
+                ],
               ),
             ],
           ),
