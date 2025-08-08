@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod_boilerplate/src/constants/fake_user_role.dart';
+import 'package:flutter_riverpod_boilerplate/src/constants/user_roles.dart';
 import 'package:flutter_riverpod_boilerplate/src/feature/authentication/auth_gate.dart';
-import 'package:flutter_riverpod_boilerplate/src/feature/examples/inline_calendar.dart';
-import 'package:flutter_riverpod_boilerplate/src/feature/examples/calendar_root.dart';
 import 'package:flutter_riverpod_boilerplate/src/feature/home/data_table.dart';
 import 'package:flutter_riverpod_boilerplate/src/feature/home/grid.dart';
 import 'package:flutter_riverpod_boilerplate/src/feature/scheduling/presentation/schedule_list_page.dart';
-import 'package:flutter_riverpod_boilerplate/src/routing/app_navigation_bar.dart';
+import 'package:flutter_riverpod_boilerplate/src/routing/app_navigation_widget.dart';
 import 'package:flutter_riverpod_boilerplate/src/feature/home/home.dart';
 import 'package:go_router/go_router.dart';
 
@@ -16,9 +16,6 @@ final _shellNavigatorHomeKey = GlobalKey<NavigatorState>(
 );
 final _shellNavigatorProfileKey = GlobalKey<NavigatorState>(
   debugLabel: 'shellProfile',
-);
-final _shellNavigatorCalendarKey = GlobalKey<NavigatorState>(
-  debugLabel: 'shellCalendar',
 );
 final _shellNavigatorDataTableKey = GlobalKey<NavigatorState>(
   debugLabel: 'shellDataTable',
@@ -35,7 +32,11 @@ final goRouterProvider = Provider((ref) {
     navigatorKey: _rootNavigatorKey,
     debugLogDiagnostics: false,
     redirect: (context, state) {
-      // final path = state.uri.path;
+      final path = state.uri.path;
+      final userRole = FakeUserRole.tenant;
+      if (path.startsWith('/clientele') && userRole == UserRoles.tenant) {
+        return '/';
+      }
       // check loggedIn state here then redirect to proper path
       return null;
     },
@@ -48,7 +49,7 @@ final goRouterProvider = Provider((ref) {
       ),
       StatefulShellRoute.indexedStack(
         pageBuilder: (context, state, navigationShell) => NoTransitionPage(
-          child: AppNavigationBar(navigationShell: navigationShell),
+          child: AppNavigationWidget(navigationShell: navigationShell),
         ),
         branches: [
           StatefulShellBranch(

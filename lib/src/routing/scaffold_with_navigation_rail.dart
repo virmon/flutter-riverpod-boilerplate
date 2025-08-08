@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod_boilerplate/src/routing/app_navigation_bar.dart';
+import 'package:flutter_riverpod_boilerplate/src/routing/app_navigation_widget.dart';
 
 class ScaffoldWithNavigationRail extends StatefulWidget {
   const ScaffoldWithNavigationRail({
