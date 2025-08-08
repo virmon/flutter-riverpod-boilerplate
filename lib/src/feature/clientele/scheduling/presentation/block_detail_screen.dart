@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod_boilerplate/src/constants/app_colors.dart';
 
-class EventDetail extends StatefulWidget {
-  const EventDetail({super.key});
+class BlockDetail extends StatefulWidget {
+  const BlockDetail({super.key});
 
   @override
-  State<EventDetail> createState() => _EventDetailState();
+  State<BlockDetail> createState() => _BlockDetailState();
 }
 
-class _EventDetailState extends State<EventDetail> {
+class _BlockDetailState extends State<BlockDetail> {
   final ScrollController _scrollController = ScrollController();
   bool _showTitle = false;
 
-  final String avatarImage = 'assets/avatar_placeholder.jpg';
+  final String avatarImage = 'assets/avatar_placeholder3.jpg';
   final String title = 'Studio A - Core';
   final String eventHost = 'Emily Tresk';
   final String hostTitle = 'Instructor';

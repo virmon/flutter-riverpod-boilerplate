@@ -4,8 +4,8 @@ import 'package:flutter_riverpod_boilerplate/src/constants/fake_user_role.dart';
 import 'package:flutter_riverpod_boilerplate/src/constants/user_roles.dart';
 import 'package:flutter_riverpod_boilerplate/src/feature/authentication/auth_gate.dart';
 import 'package:flutter_riverpod_boilerplate/src/feature/clientele/scheduling/presentation/bookings_screen.dart';
-import 'package:flutter_riverpod_boilerplate/src/feature/clientele/scheduling/presentation/event_detail.dart';
-import 'package:flutter_riverpod_boilerplate/src/feature/clientele/scheduling/presentation/events_list.dart';
+import 'package:flutter_riverpod_boilerplate/src/feature/clientele/scheduling/presentation/block_detail_screen.dart';
+import 'package:flutter_riverpod_boilerplate/src/feature/clientele/scheduling/presentation/blocks_list_screen.dart';
 import 'package:flutter_riverpod_boilerplate/src/routing/app_navigation_widget.dart';
 
 import 'package:go_router/go_router.dart';
@@ -70,13 +70,13 @@ final goRouterClienteleProvider = Provider((ref) {
                     path: '/bookings',
                     name: ClienteleRoute.tenantCalendar.name,
                     pageBuilder: (context, state) =>
-                        const NoTransitionPage(child: EventsList()),
+                        const NoTransitionPage(child: BlocksList()),
                   ),
                   GoRoute(
                     path: '/event/detail',
                     name: ClienteleRoute.eventDetail.name,
                     pageBuilder: (context, state) =>
-                        const NoTransitionPage(child: EventDetail()),
+                        const NoTransitionPage(child: BlockDetail()),
                   ),
                 ],
               ),

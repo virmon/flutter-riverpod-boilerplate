@@ -5,14 +5,14 @@ import 'package:flutter_riverpod_boilerplate/src/feature/clientele/helper.dart';
 import 'package:flutter_riverpod_boilerplate/src/routing/clientele/clientele_router.dart';
 import 'package:go_router/go_router.dart';
 
-class EventsList extends StatefulWidget {
-  const EventsList({super.key});
+class BlocksList extends StatefulWidget {
+  const BlocksList({super.key});
 
   @override
-  State<EventsList> createState() => _EventsListState();
+  State<BlocksList> createState() => _BlocksListState();
 }
 
-class _EventsListState extends State<EventsList> {
+class _BlocksListState extends State<BlocksList> {
   DateTime _selectedDate = DateTime.now();
   DateTime _currentWeekTimeline = getMondayOfCurrentWeek();
 
