@@ -2,16 +2,43 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod_boilerplate/src/common/cancel_button_widget.dart';
 import 'package:flutter_riverpod_boilerplate/src/common/review_button_widget.dart';
 import 'package:flutter_riverpod_boilerplate/src/constants/app_colors.dart';
+import 'package:flutter_riverpod_boilerplate/src/constants/mock_data.dart';
+
+class ButtonLabel {
+  static const book = 'Book';
+  static const cancel = 'Cancel';
+  static const review = 'Review';
+}
 
 class BookingCardWidget extends StatelessWidget {
-  final String buttonText;
+  final String title;
+  final String startTime;
+  final String location;
+  final String status;
 
-  const BookingCardWidget({super.key, this.buttonText = 'Book'});
+  const BookingCardWidget({
+    super.key,
+    required this.title,
+    required this.startTime,
+    required this.location,
+    required this.status,
+  });
 
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final isMobileView = screenWidth < 600;
+
+    final isAvatarVisible = status != BookingStatus.attended.name;
+
+    String buttonLabel = ButtonLabel.book;
+    if (status == BookingStatus.cancelled.name) {
+      buttonLabel = ButtonLabel.cancel;
+    } else if (status == BookingStatus.attended.name) {
+      buttonLabel = ButtonLabel.review;
+    } else {
+      buttonLabel = ButtonLabel.book;
+    }
 
     return Center(
       child: Card(
@@ -24,33 +51,37 @@ class BookingCardWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               ListTile(
-                leading: CircleAvatar(
-                  radius: 30,
-                  backgroundImage: AssetImage('assets/avatar_placeholder.jpg'),
-                  backgroundColor: Colors.transparent,
+                leading: Visibility(
+                  visible: isAvatarVisible,
+                  child: CircleAvatar(
+                    radius: 30,
+                    backgroundImage: AssetImage(
+                      'assets/avatar_placeholder.jpg',
+                    ),
+                    backgroundColor: Colors.transparent,
+                  ),
                 ),
-                title: const Text('Business1 - Description'),
-                subtitle: const Text('Location'),
+                title: Text(title),
+                subtitle: Text(location),
               ),
               ListTile(
-                title: Text(
-                  'Jul 26, 2025 3:00 PM * 55 mins',
-                  style: TextStyle(color: AppColors.grey),
-                ),
+                title: Text(startTime, style: TextStyle(color: AppColors.grey)),
               ),
               Divider(),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Builder(
                   builder: (context) {
-                    switch (buttonText) {
-                      case 'Cancel':
+                    switch (buttonLabel) {
+                      case ButtonLabel.cancel:
                         return CancelButtonWidget();
-                      case 'Review':
+                      case ButtonLabel.review:
                         return ReviewButtonWidget();
                       default:
                         return ElevatedButton(
-                          onPressed: () => {},
+                          onPressed: () {
+                            // todo: implement book functionality
+                          },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: AppColors.violetC2,
                             foregroundColor: Colors.white,
@@ -64,7 +95,7 @@ class BookingCardWidget extends StatelessWidget {
                             ),
                             minimumSize: Size(double.infinity, 50),
                           ),
-                          child: Text(buttonText),
+                          child: Text(buttonLabel),
                         );
                     }
                   },

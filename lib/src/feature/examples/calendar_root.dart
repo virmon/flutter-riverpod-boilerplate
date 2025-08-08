@@ -84,7 +84,7 @@ class _CalendarRootState extends State<CalendarRoot> {
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
             ),
           ),
-          BookingCardWidget(buttonText: 'Cancel'),
+          // BookingCardWidget(buttonText: 'Cancel'),
           Padding(
             padding: const EdgeInsets.symmetric(
               vertical: 10.0,
@@ -95,8 +95,8 @@ class _CalendarRootState extends State<CalendarRoot> {
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
             ),
           ),
-          BookingCardWidget(buttonText: 'Review'),
-          BookingCardWidget(buttonText: 'Review'),
+          // BookingCardWidget(buttonText: 'Review'),
+          // BookingCardWidget(buttonText: 'Review'),
         ],
       ),
     );

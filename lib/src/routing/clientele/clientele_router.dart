@@ -4,8 +4,8 @@ import 'package:flutter_riverpod_boilerplate/src/constants/fake_user_role.dart';
 import 'package:flutter_riverpod_boilerplate/src/constants/user_roles.dart';
 import 'package:flutter_riverpod_boilerplate/src/feature/authentication/auth_gate.dart';
 import 'package:flutter_riverpod_boilerplate/src/feature/clientele/scheduling/presentation/bookings_screen.dart';
-import 'package:flutter_riverpod_boilerplate/src/feature/clientele/scheduling/presentation/block_detail_screen.dart';
-import 'package:flutter_riverpod_boilerplate/src/feature/clientele/scheduling/presentation/blocks_list_screen.dart';
+import 'package:flutter_riverpod_boilerplate/src/feature/clientele/scheduling/presentation/block_detail/block_detail_screen.dart';
+import 'package:flutter_riverpod_boilerplate/src/feature/clientele/scheduling/presentation/block_list/business_blocks_list_screen.dart';
 import 'package:flutter_riverpod_boilerplate/src/routing/app_navigation_widget.dart';
 
 import 'package:go_router/go_router.dart';
@@ -27,7 +27,9 @@ enum ClienteleRoute {
   tenantCalendar,
   clienteleMemberships,
   clienteleProfile,
-  eventDetail,
+  blockDetail,
+  detail,
+  event,
 }
 
 final goRouterClienteleProvider = Provider((ref) {
@@ -69,15 +71,68 @@ final goRouterClienteleProvider = Provider((ref) {
                   GoRoute(
                     path: '/bookings',
                     name: ClienteleRoute.tenantCalendar.name,
-                    pageBuilder: (context, state) =>
-                        const NoTransitionPage(child: BlocksList()),
+                    pageBuilder: (context, state) {
+                      final businessId =
+                          state.uri.queryParameters['businessId'];
+                      if (businessId != null) {
+                        return NoTransitionPage(
+                          child: BusinessBlocksList(businessId: businessId),
+                        );
+                      }
+                      return NoTransitionPage(
+                        child: BusinessBlocksList(businessId: businessId),
+                      );
+                    },
+                    routes: [
+                      GoRoute(
+                        path: '/event',
+                        name: ClienteleRoute.blockDetail.name,
+                        pageBuilder: (context, state) {
+                          final blockId = state.uri.queryParameters['blockId'];
+                          final businessId =
+                              state.uri.queryParameters['businessId'];
+                          if (blockId != null) {
+                            return NoTransitionPage(
+                              child: BlockDetail(blockId: blockId),
+                            );
+                          }
+                          return NoTransitionPage(
+                            child: BlockDetail(blockId: blockId!),
+                          );
+                        },
+                      ),
+                    ],
                   ),
                   GoRoute(
-                    path: '/event/detail',
-                    name: ClienteleRoute.eventDetail.name,
-                    pageBuilder: (context, state) =>
-                        const NoTransitionPage(child: BlockDetail()),
+                    path: '/detail',
+                    name: ClienteleRoute.detail.name,
+                    pageBuilder: (context, state) {
+                      final blockId = state.uri.queryParameters['blockId'];
+                      if (blockId != null) {
+                        return NoTransitionPage(
+                          child: BlockDetail(blockId: blockId),
+                        );
+                      }
+                      return NoTransitionPage(
+                        child: BlockDetail(blockId: blockId!),
+                      );
+                    },
                   ),
+                  // GoRoute(
+                  //   path: '/event/detail',
+                  //   name: ClienteleRoute.blockDetail.name,
+                  //   pageBuilder: (context, state) {
+                  //     final blockId = state.uri.queryParameters['blockId'];
+                  //     if (blockId != null) {
+                  //       return NoTransitionPage(
+                  //         child: BlockDetail(blockId: blockId),
+                  //       );
+                  //     }
+                  //     return NoTransitionPage(
+                  //       child: BlockDetail(blockId: blockId!),
+                  //     );
+                  //   },
+                  // ),
                 ],
               ),
             ],
