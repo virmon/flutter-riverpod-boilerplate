@@ -59,7 +59,7 @@ class _BookingsScreenState extends ConsumerState<BookingsScreen> {
                                 if (membership.businessId != null) {
                                   context.goNamed(
                                     ClienteleRoute.tenantCalendar.name,
-                                    queryParameters: {
+                                    pathParameters: {
                                       'businessId': membership.businessId
                                           .toString(),
                                     },
@@ -108,8 +108,10 @@ class _BookingsScreenState extends ConsumerState<BookingsScreen> {
                         (booking) => GestureDetector(
                           onTap: () {
                             context.goNamed(
-                              ClienteleRoute.detail.name,
-                              queryParameters: {'blockId': booking.blockId},
+                              ClienteleRoute.bookingDetail.name,
+                              pathParameters: {
+                                'blockId': booking.blockId.toString(),
+                              },
                             );
                           },
                           child: BookingCardWidget(
@@ -141,8 +143,10 @@ class _BookingsScreenState extends ConsumerState<BookingsScreen> {
                         (booking) => GestureDetector(
                           onTap: () {
                             context.goNamed(
-                              ClienteleRoute.detail.name,
-                              queryParameters: {'blockId': booking.blockId},
+                              ClienteleRoute.bookingDetail.name,
+                              pathParameters: {
+                                'blockId': booking.blockId.toString(),
+                              },
                             );
                           },
                           child: BookingCardWidget(

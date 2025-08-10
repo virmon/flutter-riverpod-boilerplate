@@ -27,14 +27,13 @@ enum ClienteleRoute {
   tenantCalendar,
   clienteleMemberships,
   clienteleProfile,
-  blockDetail,
-  detail,
-  event,
+  bookingDetail,
+  block,
 }
 
 final goRouterClienteleProvider = Provider((ref) {
   return GoRouter(
-    initialLocation: '/clientele',
+    initialLocation: '/bookings',
     navigatorKey: _rootClienteleNavigatorKey,
     debugLogDiagnostics: false,
     redirect: (context, state) {
@@ -42,7 +41,7 @@ final goRouterClienteleProvider = Provider((ref) {
       final userRole = FakeUserRole.tenant;
       if (path.startsWith('/profile') ||
           path.startsWith('/schedule') && userRole == UserRoles.clientele) {
-        return '/clientele';
+        return '/bookings';
       }
       // check loggedIn state here then redirect to proper path
       return null;
@@ -63,17 +62,16 @@ final goRouterClienteleProvider = Provider((ref) {
             navigatorKey: _shellClienteleBookingsKey,
             routes: [
               GoRoute(
-                path: '/clientele',
+                path: '/bookings',
                 name: ClienteleRoute.clienteleBookings.name,
                 pageBuilder: (context, state) =>
                     const NoTransitionPage(child: BookingsScreen()),
                 routes: [
                   GoRoute(
-                    path: '/bookings',
+                    path: '/business/:businessId',
                     name: ClienteleRoute.tenantCalendar.name,
                     pageBuilder: (context, state) {
-                      final businessId =
-                          state.uri.queryParameters['businessId'];
+                      final businessId = state.pathParameters['businessId'];
                       if (businessId != null) {
                         return NoTransitionPage(
                           child: BusinessBlocksList(businessId: businessId),
@@ -85,54 +83,37 @@ final goRouterClienteleProvider = Provider((ref) {
                     },
                     routes: [
                       GoRoute(
-                        path: '/event',
-                        name: ClienteleRoute.blockDetail.name,
+                        path: '/block/:blockId',
+                        name: ClienteleRoute.block.name,
                         pageBuilder: (context, state) {
-                          final blockId = state.uri.queryParameters['blockId'];
-                          final businessId =
-                              state.uri.queryParameters['businessId'];
+                          final blockId = state.pathParameters['blockId'];
+                          final businessId = state.pathParameters['businessId'];
                           if (blockId != null) {
                             return NoTransitionPage(
-                              child: BlockDetail(blockId: blockId),
+                              child: BlockDetail(
+                                blockId: blockId,
+                                businessId: businessId,
+                              ),
                             );
                           }
-                          return NoTransitionPage(
-                            child: BlockDetail(blockId: blockId!),
-                          );
+                          return NoTransitionPage(child: Text('data'));
                         },
                       ),
                     ],
                   ),
                   GoRoute(
-                    path: '/detail',
-                    name: ClienteleRoute.detail.name,
+                    path: '/block/:blockId',
+                    name: ClienteleRoute.bookingDetail.name,
                     pageBuilder: (context, state) {
-                      final blockId = state.uri.queryParameters['blockId'];
+                      final blockId = state.pathParameters['blockId'];
                       if (blockId != null) {
                         return NoTransitionPage(
                           child: BlockDetail(blockId: blockId),
                         );
                       }
-                      return NoTransitionPage(
-                        child: BlockDetail(blockId: blockId!),
-                      );
+                      return NoTransitionPage(child: Text('data'));
                     },
                   ),
-                  // GoRoute(
-                  //   path: '/event/detail',
-                  //   name: ClienteleRoute.blockDetail.name,
-                  //   pageBuilder: (context, state) {
-                  //     final blockId = state.uri.queryParameters['blockId'];
-                  //     if (blockId != null) {
-                  //       return NoTransitionPage(
-                  //         child: BlockDetail(blockId: blockId),
-                  //       );
-                  //     }
-                  //     return NoTransitionPage(
-                  //       child: BlockDetail(blockId: blockId!),
-                  //     );
-                  //   },
-                  // ),
                 ],
               ),
             ],
@@ -162,8 +143,26 @@ final goRouterClienteleProvider = Provider((ref) {
         ],
       ),
     ],
-    errorPageBuilder: (context, state) => const NoTransitionPage(
-      child: Scaffold(body: Center(child: Text('Page Not Found'))),
+    errorPageBuilder: (context, state) => NoTransitionPage(
+      child: Scaffold(
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text(
+                'Page Not Found',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              TextButton(
+                onPressed: () {
+                  context.goNamed(ClienteleRoute.clienteleBookings.name);
+                },
+                child: const Text('Back to home'),
+              ),
+            ],
+          ),
+        ),
+      ),
     ),
   );
 });

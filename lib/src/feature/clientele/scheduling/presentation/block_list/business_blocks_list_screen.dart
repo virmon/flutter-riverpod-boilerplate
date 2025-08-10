@@ -36,88 +36,97 @@ class _BlocksListState extends ConsumerState<BusinessBlocksList> {
       blocksListControllerProvider(widget.businessId!),
     );
 
-    return SingleChildScrollView(
-      child: AsyncValueWidget(
-        value: blocksAsyncValue,
-        data: (blocks) => Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(10, 30, 10, 10),
-              child: ListTile(
-                leading: CircleAvatar(
-                  radius: 30,
-                  backgroundImage: AssetImage('assets/avatar_placeholder2.jpg'),
-                  backgroundColor: Colors.transparent,
+    return Scaffold(
+      body: SingleChildScrollView(
+        child: AsyncValueWidget(
+          value: blocksAsyncValue,
+          data: (blocks) => Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(10, 30, 10, 10),
+                child: ListTile(
+                  leading: CircleAvatar(
+                    radius: 30,
+                    backgroundImage: AssetImage(
+                      'assets/avatar_placeholder2.jpg',
+                    ),
+                    backgroundColor: Colors.transparent,
+                  ),
+                  title: Text(blocks[0]!.tenant.toString()),
                 ),
-                title: Text(blocks[0]!.tenant.toString()),
               ),
-            ),
-            Column(
-              children: [
-                EasyDateTimeLinePicker(
-                  firstDate: _currentWeekTimeline,
-                  lastDate: _currentWeekTimeline.add(Duration(days: 6)),
-                  headerOptions: HeaderOptions(headerType: HeaderType.viewOnly),
-                  focusedDate: _selectedDate,
-                  timelineOptions: TimelineOptions(padding: EdgeInsets.all(10)),
-                  selectionMode: SelectionMode.autoCenter(),
-                  itemExtent: 50,
-                  onDateChange: (date) {
-                    setState(() {
-                      _selectedDate = date;
-                    });
-                  },
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    IconButton(
-                      onPressed: () {
-                        setState(() {
-                          _currentWeekTimeline = _currentWeekTimeline.subtract(
-                            Duration(days: 7),
-                          );
-                        });
-                      },
-                      icon: Icon(Icons.arrow_circle_left_rounded),
+              Column(
+                children: [
+                  EasyDateTimeLinePicker(
+                    firstDate: _currentWeekTimeline,
+                    lastDate: _currentWeekTimeline.add(Duration(days: 6)),
+                    headerOptions: HeaderOptions(
+                      headerType: HeaderType.viewOnly,
                     ),
-                    IconButton(
-                      onPressed: () {
-                        setState(() {
-                          _currentWeekTimeline = _currentWeekTimeline.add(
-                            Duration(days: 7),
-                          );
-                        });
-                      },
-                      icon: Icon(Icons.arrow_circle_right_rounded),
+                    focusedDate: _selectedDate,
+                    timelineOptions: TimelineOptions(
+                      padding: EdgeInsets.all(10),
                     ),
-                  ],
-                ),
-              ],
-            ),
-            Column(
-              children: blocks
-                  .map(
-                    (block) => GestureDetector(
-                      child: BookingCardWidget(
-                        title: block!.title.toString(),
-                        startTime: block.startTime.toString(),
-                        location: block.location.toString(),
-                        status: block.status.toString(),
+                    selectionMode: SelectionMode.autoCenter(),
+                    itemExtent: 50,
+                    onDateChange: (date) {
+                      setState(() {
+                        _selectedDate = date;
+                      });
+                    },
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      IconButton(
+                        onPressed: () {
+                          setState(() {
+                            _currentWeekTimeline = _currentWeekTimeline
+                                .subtract(Duration(days: 7));
+                          });
+                        },
+                        icon: Icon(Icons.arrow_circle_left_rounded),
                       ),
-                      onTap: () => context.goNamed(
-                        ClienteleRoute.blockDetail.name,
-                        queryParameters: {
-                          'blockId': block.blockId.toString(),
-                          'businessId': block.businessId.toString(),
+                      IconButton(
+                        onPressed: () {
+                          setState(() {
+                            _currentWeekTimeline = _currentWeekTimeline.add(
+                              Duration(days: 7),
+                            );
+                          });
+                        },
+                        icon: Icon(Icons.arrow_circle_right_rounded),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              Column(
+                children: blocks
+                    .map(
+                      (block) => GestureDetector(
+                        child: BookingCardWidget(
+                          title: block!.title.toString(),
+                          startTime: block.startTime.toString(),
+                          location: block.location.toString(),
+                          status: block.status.toString(),
+                        ),
+                        onTap: () {
+                          context.goNamed(
+                            ClienteleRoute.block.name,
+                            pathParameters: {
+                              'businessId': block.businessId.toString(),
+                              'blockId': block.blockId.toString(),
+                            },
+                          );
                         },
                       ),
-                    ),
-                  )
-                  .toList(),
-            ),
-          ],
+                    )
+                    .toList(),
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -63,13 +63,7 @@ class _BlockDetailState extends ConsumerState<BlockDetail> {
             SliverAppBar(
               leading: IconButton(
                 onPressed: () {
-                  if (widget.businessId != null) {
-                    context.go(
-                      '/clientele/bookings?businessId=${widget.businessId}',
-                    );
-                  } else {
-                    context.pop();
-                  }
+                  context.pop();
                 },
                 icon: Icon(Icons.arrow_back),
               ),
