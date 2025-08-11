@@ -1,17 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod_boilerplate/src/constants/app_colors.dart';
+import 'package:flutter_riverpod_boilerplate/src/feature/authentication/privilege_controller.dart';
 import 'package:flutter_riverpod_boilerplate/src/routing/app_router.dart';
+import 'package:flutter_riverpod_boilerplate/src/routing/business/business_router.dart';
+
+import 'package:go_router/go_router.dart';
 
 class App extends ConsumerWidget {
   const App({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final goRouter = ref.watch(goRouterProvider);
+    final hasAdminPrivilege = ref.watch(privilegeControllerProvider);
+    GoRouter routerProvider = ref.watch(goRouterClienteleProvider);
+    if (hasAdminPrivilege) {
+      routerProvider = ref.watch(goRouterBusinessProvider);
+    }
+
     return MaterialApp.router(
-      routerConfig: goRouter,
-      title: 'Flutter App',
+      routerConfig: routerProvider,
+      title: 'Kaioras',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: AppColors.violetC2),
         appBarTheme: const AppBarTheme(

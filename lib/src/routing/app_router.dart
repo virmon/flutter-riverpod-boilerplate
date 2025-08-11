@@ -1,105 +1,183 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod_boilerplate/src/constants/fake_user_role.dart';
+import 'package:flutter_riverpod_boilerplate/src/constants/user_roles.dart';
 import 'package:flutter_riverpod_boilerplate/src/feature/authentication/auth_gate.dart';
-import 'package:flutter_riverpod_boilerplate/src/feature/examples/inline_calendar.dart';
-import 'package:flutter_riverpod_boilerplate/src/feature/examples/calendar_root.dart';
-import 'package:flutter_riverpod_boilerplate/src/feature/home/data_table.dart';
-import 'package:flutter_riverpod_boilerplate/src/feature/home/grid.dart';
-import 'package:flutter_riverpod_boilerplate/src/feature/scheduling/presentation/schedule_list_page.dart';
-import 'package:flutter_riverpod_boilerplate/src/routing/app_navigation_bar.dart';
-import 'package:flutter_riverpod_boilerplate/src/feature/home/home.dart';
+import 'package:flutter_riverpod_boilerplate/src/feature/clientele/scheduling/presentation/bookings_screen.dart';
+import 'package:flutter_riverpod_boilerplate/src/feature/clientele/scheduling/presentation/block_detail/block_detail_screen.dart';
+import 'package:flutter_riverpod_boilerplate/src/feature/clientele/scheduling/presentation/block_list/business_blocks_list_screen.dart';
+import 'package:flutter_riverpod_boilerplate/src/routing/app_navigation_widget.dart';
+
 import 'package:go_router/go_router.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
-final _shellNavigatorHomeKey = GlobalKey<NavigatorState>(
-  debugLabel: 'shellHome',
+final _shellClienteleBookingsKey = GlobalKey<NavigatorState>(
+  debugLabel: 'shellClienteleBookings',
 );
-final _shellNavigatorProfileKey = GlobalKey<NavigatorState>(
-  debugLabel: 'shellProfile',
+final _shellClienteleMembershipKey = GlobalKey<NavigatorState>(
+  debugLabel: 'shellClienteleMembership',
 );
-final _shellNavigatorCalendarKey = GlobalKey<NavigatorState>(
-  debugLabel: 'shellCalendar',
+final _shellClienteleProfileKey = GlobalKey<NavigatorState>(
+  debugLabel: 'shellClienteleProfile',
 );
-final _shellNavigatorDataTableKey = GlobalKey<NavigatorState>(
-  debugLabel: 'shellDataTable',
-);
-final _shellNavigatorScheduleKey = GlobalKey<NavigatorState>(
-  debugLabel: 'shellSchedule',
+final _shellBusinessKey = GlobalKey<NavigatorState>(
+  debugLabel: 'shellBusiness',
 );
 
-enum AppRoute { signIn, home, profile, schedule, dataTable, calendarDetail }
+enum ClienteleRoute {
+  signIn,
+  clienteleBookings,
+  tenantCalendar,
+  clienteleMemberships,
+  clienteleProfile,
+  bookingDetail,
+  block,
+  business,
+}
 
-final goRouterProvider = Provider((ref) {
+final goRouterClienteleProvider = Provider((ref) {
   return GoRouter(
-    initialLocation: '/',
+    initialLocation: '/bookings',
     navigatorKey: _rootNavigatorKey,
     debugLogDiagnostics: false,
     redirect: (context, state) {
-      // final path = state.uri.path;
+      final path = state.uri.path;
+      final userRole = FakeUserRole.tenant;
+      if (path.startsWith('/profile') ||
+          path.startsWith('/schedule') && userRole == UserRoles.clientele) {
+        return '/bookings';
+      }
       // check loggedIn state here then redirect to proper path
       return null;
     },
     routes: [
       GoRoute(
         path: '/signIn',
-        name: AppRoute.signIn.name,
+        name: ClienteleRoute.signIn.name,
         pageBuilder: (context, state) =>
             const NoTransitionPage(child: AuthGate()),
       ),
       StatefulShellRoute.indexedStack(
         pageBuilder: (context, state, navigationShell) => NoTransitionPage(
-          child: AppNavigationBar(navigationShell: navigationShell),
+          child: AppNavigationWidget(navigationShell: navigationShell),
         ),
         branches: [
           StatefulShellBranch(
-            navigatorKey: _shellNavigatorHomeKey,
+            navigatorKey: _shellClienteleBookingsKey,
             routes: [
               GoRoute(
-                path: '/',
-                name: AppRoute.home.name,
+                path: '/bookings',
+                name: ClienteleRoute.clienteleBookings.name,
                 pageBuilder: (context, state) =>
-                    const NoTransitionPage(child: Home()),
+                    const NoTransitionPage(child: BookingsScreen()),
+                routes: [
+                  GoRoute(
+                    path: '/business/:businessId',
+                    name: ClienteleRoute.tenantCalendar.name,
+                    pageBuilder: (context, state) {
+                      final businessId = state.pathParameters['businessId'];
+                      if (businessId != null) {
+                        return NoTransitionPage(
+                          child: BusinessBlocksList(businessId: businessId),
+                        );
+                      }
+                      return NoTransitionPage(
+                        child: BusinessBlocksList(businessId: businessId),
+                      );
+                    },
+                    routes: [
+                      GoRoute(
+                        path: '/block/:blockId',
+                        name: ClienteleRoute.block.name,
+                        pageBuilder: (context, state) {
+                          final blockId = state.pathParameters['blockId'];
+                          final businessId = state.pathParameters['businessId'];
+                          if (blockId != null) {
+                            return NoTransitionPage(
+                              child: BlockDetail(
+                                blockId: blockId,
+                                businessId: businessId,
+                              ),
+                            );
+                          }
+                          return NoTransitionPage(child: Text('data'));
+                        },
+                      ),
+                    ],
+                  ),
+                  GoRoute(
+                    path: '/block/:blockId',
+                    name: ClienteleRoute.bookingDetail.name,
+                    pageBuilder: (context, state) {
+                      final blockId = state.pathParameters['blockId'];
+                      if (blockId != null) {
+                        return NoTransitionPage(
+                          child: BlockDetail(blockId: blockId),
+                        );
+                      }
+                      return NoTransitionPage(child: Text('data'));
+                    },
+                  ),
+                ],
               ),
             ],
           ),
           StatefulShellBranch(
-            navigatorKey: _shellNavigatorProfileKey,
+            navigatorKey: _shellClienteleMembershipKey,
             routes: [
               GoRoute(
-                path: '/profile',
-                name: AppRoute.profile.name,
+                path: '/memberships',
+                name: ClienteleRoute.clienteleMemberships.name,
                 pageBuilder: (context, state) =>
-                    const NoTransitionPage(child: GridWidget()),
+                    const NoTransitionPage(child: Placeholder()),
               ),
             ],
           ),
           StatefulShellBranch(
-            navigatorKey: _shellNavigatorScheduleKey,
+            navigatorKey: _shellClienteleProfileKey,
             routes: [
               GoRoute(
-                path: '/schedule',
-                name: AppRoute.schedule.name,
+                path: '/clientele/profile',
+                name: ClienteleRoute.clienteleProfile.name,
                 pageBuilder: (context, state) =>
-                    const NoTransitionPage(child: ScheduleListPage()),
+                    const NoTransitionPage(child: Placeholder()),
               ),
             ],
           ),
           StatefulShellBranch(
-            navigatorKey: _shellNavigatorDataTableKey,
+            navigatorKey: _shellBusinessKey,
             routes: [
               GoRoute(
-                path: '/dataTable',
-                name: AppRoute.dataTable.name,
+                path: '/manage',
+                name: ClienteleRoute.business.name,
                 pageBuilder: (context, state) =>
-                    const NoTransitionPage(child: MyDataTable()),
+                    const NoTransitionPage(child: Placeholder()),
               ),
             ],
           ),
         ],
       ),
     ],
-    errorPageBuilder: (context, state) => const NoTransitionPage(
-      child: Scaffold(body: Center(child: Text('Page Not Found'))),
+    errorPageBuilder: (context, state) => NoTransitionPage(
+      child: Scaffold(
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text(
+                'Page Not Found',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              TextButton(
+                onPressed: () {
+                  context.goNamed(ClienteleRoute.clienteleBookings.name);
+                },
+                child: const Text('Back to home'),
+              ),
+            ],
+          ),
+        ),
+      ),
     ),
   );
 });
