@@ -41,9 +41,9 @@ class _InlineCalendarState extends State<InlineCalendar> {
               });
             },
           ),
-          BookingCardWidget(),
-          BookingCardWidget(),
-          BookingCardWidget(),
+          // BookingCardWidget(),
+          // BookingCardWidget(),
+          // BookingCardWidget(),
         ],
       ),
     );
