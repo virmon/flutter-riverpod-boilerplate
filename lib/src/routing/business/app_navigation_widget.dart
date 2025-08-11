@@ -1,11 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_riverpod_boilerplate/src/common/async_value_widget.dart';
 import 'package:flutter_riverpod_boilerplate/src/constants/fake_user_role.dart';
 import 'package:flutter_riverpod_boilerplate/src/constants/user_roles.dart';
-import 'package:flutter_riverpod_boilerplate/src/feature/authentication/privilege_controller.dart';
-import 'package:flutter_riverpod_boilerplate/src/routing/business/business_navigation_bar.dart';
-import 'package:flutter_riverpod_boilerplate/src/routing/business/business_navigation_rail.dart';
 import 'package:flutter_riverpod_boilerplate/src/routing/clientele/clientele_navigation_bar.dart';
 import 'package:flutter_riverpod_boilerplate/src/routing/clientele/clientele_navigation_rail.dart';
 import 'package:flutter_riverpod_boilerplate/src/routing/scaffold_with_navigation_bar.dart';
@@ -25,7 +20,7 @@ class ClienteleNavigationLabel {
   static const profile = 'Profile';
 }
 
-class AppNavigationWidget extends ConsumerWidget {
+class AppNavigationWidget extends StatelessWidget {
   const AppNavigationWidget({Key? key, required this.navigationShell})
     : super(key: key ?? const ValueKey('AppNavigationBar'));
   final StatefulNavigationShell navigationShell;
@@ -61,13 +56,13 @@ class AppNavigationWidget extends ConsumerWidget {
     BoxConstraints constraints,
   ) {
     if (constraints.maxWidth < 450) {
-      return BusinessNavigationBar(
+      return ScaffoldWithNavigationBar(
         body: navigationShell,
         selectedIndex: navigationShell.currentIndex,
         onDestinationSelected: _goBranch,
       );
     } else {
-      return BusinessNavigationRail(
+      return ScaffoldWithNavigationRail(
         body: navigationShell,
         selectedIndex: navigationShell.currentIndex,
         onDestinationSelected: _goBranch,
@@ -76,15 +71,16 @@ class AppNavigationWidget extends ConsumerWidget {
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        final hasAdminPrivilege = ref.watch(privilegeControllerProvider);
+        final userRole = FakeUserRole.tenant;
 
-        if (hasAdminPrivilege) {
-          return _tenantNavigationWidget(context, constraints);
-        } else {
-          return _clienteleNavigationWidget(context, constraints);
+        switch (userRole) {
+          case UserRoles.clientele:
+            return _clienteleNavigationWidget(context, constraints);
+          default:
+            return _tenantNavigationWidget(context, constraints);
         }
       },
     );

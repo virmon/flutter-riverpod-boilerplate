@@ -3,8 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod_boilerplate/src/feature/authentication/privilege_controller.dart';
 import 'package:flutter_riverpod_boilerplate/src/routing/app_navigation_widget.dart';
 
-class ClienteleNavigationRail extends ConsumerStatefulWidget {
-  const ClienteleNavigationRail({
+class BusinessNavigationRail extends ConsumerStatefulWidget {
+  const BusinessNavigationRail({
     super.key,
     required this.body,
     required this.selectedIndex,
@@ -15,12 +15,12 @@ class ClienteleNavigationRail extends ConsumerStatefulWidget {
   final ValueChanged<int> onDestinationSelected;
 
   @override
-  ConsumerState<ClienteleNavigationRail> createState() =>
-      _ScaffoldWithNavigationRailState();
+  ConsumerState<BusinessNavigationRail> createState() =>
+      _BusinessNavigationRailState();
 }
 
-class _ScaffoldWithNavigationRailState
-    extends ConsumerState<ClienteleNavigationRail> {
+class _BusinessNavigationRailState
+    extends ConsumerState<BusinessNavigationRail> {
   bool isExtended = false;
 
   @override
@@ -52,16 +52,20 @@ class _ScaffoldWithNavigationRailState
             ),
             destinations: const <NavigationRailDestination>[
               NavigationRailDestination(
-                label: Text(ClienteleNavigationLabel.bookings),
+                label: Text(NavigationLabel.home),
                 icon: Icon(Icons.home, color: Colors.white70),
               ),
               NavigationRailDestination(
-                label: Text(ClienteleNavigationLabel.memberships),
-                icon: Icon(Icons.card_membership, color: Colors.white70),
+                label: Text(NavigationLabel.profile),
+                icon: Icon(Icons.person, color: Colors.white70),
               ),
               NavigationRailDestination(
-                label: Text(ClienteleNavigationLabel.profile),
-                icon: Icon(Icons.person, color: Colors.white70),
+                label: Text(NavigationLabel.calendar),
+                icon: Icon(Icons.calendar_month, color: Colors.white70),
+              ),
+              NavigationRailDestination(
+                label: Text(NavigationLabel.dataTable),
+                icon: Icon(Icons.storage, color: Colors.white70),
               ),
             ],
             trailing: Expanded(
@@ -75,7 +79,7 @@ class _ScaffoldWithNavigationRailState
                           .read(privilegeControllerProvider.notifier)
                           .togglePrivilage();
                     },
-                    child: const Icon(Icons.work),
+                    child: const Icon(Icons.public),
                   ),
                 ),
               ),

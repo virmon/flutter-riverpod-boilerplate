@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod_boilerplate/src/common/booking_card_widget.dart';
 import 'package:flutter_riverpod_boilerplate/src/routing/app_router.dart';
+import 'package:flutter_riverpod_boilerplate/src/routing/business/business_router.dart';
 import 'package:go_router/go_router.dart';
 
 class CalendarRoot extends StatefulWidget {
